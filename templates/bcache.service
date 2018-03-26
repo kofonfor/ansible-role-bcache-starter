@@ -1,0 +1,16 @@
+[Unit]
+Description=Bcache starter for {{ bcache_device_name }}
+DefaultDependencies=no
+Requires=systemd-udev-settle.service
+After=systemd-udev-settle.service
+Before=zfs-import-cache.service
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/sbin/modprobe bcache
+ExecStart=/bin/bash -c "echo /dev/{{ bcache_device_name }} > /sys/fs/bcache/register"
+
+[Install]
+WantedBy=local-fs-pre.target

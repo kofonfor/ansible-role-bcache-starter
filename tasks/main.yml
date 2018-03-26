@@ -1,0 +1,6 @@
+- name: put systemd unit file
+  template: src=bcache.service dest=/etc/systemd/system/bcache-{{ bcache_device_name }}.service backup=yes
+  notify: systemctl daemon-reload
+
+- name: enable bcache-{{ bcache_device_name }} service
+  service: name=bcache-{{ bcache_device_name }} state=started enabled=yes
